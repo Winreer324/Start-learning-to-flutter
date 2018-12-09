@@ -1,0 +1,6 @@
+enum RadioChannelName{
+  RADIO_RECORD,
+  CHILL_HOUSE,
+  TRANCE_HITS,
+  RUSSIAN_MIX
+}
