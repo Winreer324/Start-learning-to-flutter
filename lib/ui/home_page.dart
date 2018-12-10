@@ -26,10 +26,15 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _provider = new RadioSongProvider();
     _player = new RadioPlayer();
-
+    _player.play(_provider.getCurrentChannel());
 // обновление картинки и тд
-//    Timer.periodic(
-//        Duration(seconds: 5), (timer) => _provider.updateSongCurrentChannel());
+
+    Timer.periodic( Duration(seconds: 5), (timer) =>
+        setState((){
+//          делает перестройку всего дизайна !!!
+          _provider.updateSongCurrentChannel();
+        })
+    );
   }
 
   @override
@@ -45,19 +50,20 @@ class _HomePageState extends State<HomePage> {
     for (int i = 0; i < iterableElements.length; i++) {
       var channel = listChannel[i];
 //        active channel
-      var backgroundColor = channel.radioChannelName.toString() ==
-          _player.channel.toString()
+      var backgroundColor = channel.nameChannel.toString() ==
+          _player.channel.nameChannel.toString()
           ? Colors.black38
           : Colors.white;
-print("asdfsdfadsfafdsdf sad fads ad");
+
 print(_provider.getCurrentChannel());
+
       drawerOptions.add(
           Container(
             decoration: BoxDecoration(color: backgroundColor),
             child: ListTile(
                 title: Text(
                   channel.nameChannel,
-                  style: TextStyle(color: Colors.green),
+                  style: TextStyle(color: Color(0xFF212121)),
                 ),
                 onTap: () => _onSelectChangeChannel(channel) ,
             )
@@ -81,10 +87,9 @@ print(_provider.getCurrentChannel());
               ),
               child: Center(
                 child: Text(
-//                  _provider
-//                      .getCurrentChannel()
-//                      .nameChannel,
-                "",
+                  _provider
+                      .getCurrentChannel()
+                      .nameChannel,
                   style: TextStyle(
                       fontSize: 30.0,
                       color: Colors.white
@@ -126,7 +131,9 @@ print(_provider.getCurrentChannel());
                   padding: EdgeInsets.all(20),
                   child: Card(
                     shape: Border.all(color: Colors.white, width: 2.0,style: BorderStyle.solid),
-                    child: Image.network(_provider.currentSong.image ?? ""),
+                    child: Image.network(
+                        _provider.currentSong.image ?? ""
+                    ),
                   ),
                 ),
                 Padding(
@@ -134,10 +141,7 @@ print(_provider.getCurrentChannel());
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-//                      _provider.currentSong.title ?? _provider
-//                          .getCurrentChannel()
-//                          .nameChannel,
-                    "",
+                      _provider.currentSong.title ?? _provider.getCurrentChannel().nameChannel,
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                   ),
@@ -147,10 +151,7 @@ print(_provider.getCurrentChannel());
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-//                      _provider.currentSong.artist ?? _provider
-//                          .getCurrentChannel()
-//                          .nameChannel,
-                    "",
+                      _provider.currentSong.artist ?? _provider.getCurrentChannel().nameChannel ,
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                   ),
@@ -164,10 +165,10 @@ print(_provider.getCurrentChannel());
   }
   _onSelectChangeChannel(RadioChannel channel){
     setState( () {
-//      _provider.currentChannel = channel.radioChannelName;
+      _provider.currentChannel = channel.radioChannelName;
       _player.stop();
       _player.play(_provider.getCurrentChannel());
     });
-    Navigator.of(context);
+    Navigator.pop(context);
   }
 }

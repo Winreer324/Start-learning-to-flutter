@@ -13,7 +13,7 @@ class RadioSongProvider{
 //todo 2 38 49 https://www.youtube.com/watch?v=nxvKANc3Ycg
   RadioSongProvider(){
     _initSongMap();
-    _initCarrentChannel();
+    _initCurrentChannel();
   }
 
                 //get set
@@ -36,7 +36,7 @@ class RadioSongProvider{
                 //methord
 
   void updateSongCurrentChannel() async {
-    RadioChannel channel = _radioMapChannels[_currentSong];
+    RadioChannel channel = _radioMapChannels[_currentChannel];
 //    асинхронный опирация
     http.Response response = await http.get(channel.urlToInfo);
     _currentSong =  _parseIntoHttpResponse(response);
@@ -51,7 +51,7 @@ class RadioSongProvider{
     return RadioSong.fromJson(songMap);
   }
 
-  void _initCarrentChannel() {
+  void _initCurrentChannel() {
     _currentChannel = RadioChannelName.RADIO_RECORD;
   }
 
@@ -65,7 +65,6 @@ class RadioSongProvider{
 
     _radioMapChannels[RadioChannelName.RADIO_RECORD] = radioRecordChannel;
 
-    _radioMapChannels = new Map();
     RadioChannel radioChillChannel = new RadioChannel();
     radioChillChannel.nameChannel = "Radio Chill House";
     radioChillChannel.urlToInfo = "http://www.radiorecord.ru/xml/chillhouse_online_v8.txt";
@@ -74,7 +73,6 @@ class RadioSongProvider{
 
     _radioMapChannels[RadioChannelName.CHILL_HOUSE] = radioChillChannel;
 
-    _radioMapChannels = new Map();
     RadioChannel radioRussianChannel = new RadioChannel();
     radioRussianChannel.nameChannel = "Radio Russian Mix";
     radioRussianChannel.urlToInfo = "http://www.radiorecord.ru/xml/russianhits_online_v8.txt";
@@ -83,7 +81,6 @@ class RadioSongProvider{
 
     _radioMapChannels[RadioChannelName.RUSSIAN_MIX] = radioRussianChannel;
 
-    _radioMapChannels = new Map();
     RadioChannel radioTranceChannel = new RadioChannel();
     radioTranceChannel.nameChannel = "Radio Trance Hits";
     radioTranceChannel.urlToInfo = "http://www.radiorecord.ru/xml/trancehits_online_v8.txt";

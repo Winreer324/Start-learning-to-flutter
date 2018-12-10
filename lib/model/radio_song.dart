@@ -4,6 +4,7 @@ class RadioSong{
   RadioSong();
 
   RadioSong.fromJson(Map<String, dynamic> json){
+    print(json);
     title = json["title"] ;
     artist = json["artist"];
     image = json["image600"] !=null
