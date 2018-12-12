@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   RadioSongProvider _provider;
   RadioPlayer _player;
 
-
   @override
   void initState() {
 //    без него не будет работать
@@ -31,19 +30,17 @@ class _HomePageState extends State<HomePage> {
 
     Timer.periodic( Duration(seconds: 5), (timer) =>
         setState((){
-//          делает перестройку всего дизайна !!!
+//          делает перестройку всего дизайна !!
           _provider.updateSongCurrentChannel();
         })
     );
   }
-
+//todo пофиксить вывод инфы радио которые добавленны
   @override
   Widget build(BuildContext context) {
     var drawerOptions = <Widget>[];
     var iterableElements = _provider.radioMapChannels.values;
-//    var iterableElements = "";
     var listChannel = iterableElements.toList();
-//    var listChannel = "";
 
     listChannel.sort((c1, c2) => c1.nameChannel.compareTo(c2.nameChannel));
 
@@ -56,7 +53,6 @@ class _HomePageState extends State<HomePage> {
           : Colors.white;
 
 print(_provider.getCurrentChannel());
-
       drawerOptions.add(
           Container(
             decoration: BoxDecoration(color: backgroundColor),
@@ -73,7 +69,9 @@ print(_provider.getCurrentChannel());
     return new Scaffold(
       backgroundColor: Colors.blueAccent,
       appBar: AppBar(
-        title: Text("Audio Player Beta"),
+        title: Text(_provider
+            .getCurrentChannel()
+            .nameChannel),
       ),
 //    drawer = меню для свайпа
       drawer: Drawer(
@@ -151,7 +149,7 @@ print(_provider.getCurrentChannel());
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      _provider.currentSong.artist ?? _provider.getCurrentChannel().nameChannel ,
+                      _provider.currentSong.artist ??_provider.getCurrentChannel().nameChannel ,
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                   ),
@@ -168,6 +166,9 @@ print(_provider.getCurrentChannel());
       _provider.currentChannel = channel.radioChannelName;
       _player.stop();
       _player.play(_provider.getCurrentChannel());
+
+      print("set title = "+_provider.currentSong.title+"artist = "+_provider.currentSong.artist+"\n");
+
     });
     Navigator.pop(context);
   }
